@@ -1,85 +1,121 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".MainActivity">
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:layout_marginHorizontal="8dp"
+    android:layout_marginVertical="16dp"
+    android:orientation="vertical" >
 
-    <androidx.cardview.widget.CardView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    <LinearLayout
+        android:id="@+id/endGameOverlay"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        card_view:cardCornerRadius="8dp"
-        card_view:cardElevation="4dp"
-        android:layout_margin="8dp">
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:background="#AA000000"
+        android:visibility="gone"
+        android:padding="16dp">
 
-        <LinearLayout
-            android:orientation="vertical"
+        <TextView
+            android:id="@+id/congrats"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp">
+            android:layout_weight="0.5"
+            android:text="Congratulations!"
+            android:textSize="32sp"
+            android:textColor="#FFFFFF"
+            android:gravity="center"
+            android:padding="16dp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/question_num"
-                android:text=""
-                android:textSize="18sp"
-                android:paddingTop="8dp"/>
+        <TextView
+            android:id="@+id/stats"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:text=""
+            android:textSize="24sp"
+            android:textColor="#FFFFFF"
+            android:gravity="center"
+            android:padding="16dp" />
+    </LinearLayout>
 
-            <ProgressBar
-                style="?android:attr/progressBarStyleHorizontal"
+    <TextView
+        android:id="@+id/question_num"
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:layout_height="100dp"
+        android:paddingTop="8dp"
+        android:autoSizePresetSizes="uniform"
+        android:layout_margin="16dp"
+        android:text="dada"
+        android:textSize="22sp" />
+
+    <ProgressBar
+        android:id="@+id/progress"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:max="9"
+        android:progress="0" />
+
+    <TextView
+        android:id="@+id/question"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_margin="16dp"
+        android:paddingTop="8dp"
+        android:textSize="14sp"
+        android:autoSizePresetSizes="uniform"
+        android:text="dadad" />
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="400dp">
+
+        <RadioGroup
+            android:id="@+id/group"
+            android:layout_width="365dp"
+            android:layout_height="405dp"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <RadioButton
+                android:id="@+id/first"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/progress"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:max="9"
-                android:progress="0"/>
-            
-            <TextView
-                android:id="@+id/question"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=""/>
-            
-            
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            <RadioGroup
+                android:layout_weight="0.25"
+                android:text="" />
+
+            <RadioButton
+                android:id="@+id/second"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/group"
-                android:orientation="vertical">
-                <RadioButton android:id="@+id/first"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=""/>
-                <RadioButton android:id="@+id/second"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=""/>
-                <RadioButton android:id="@+id/third"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=""/>
-                <RadioButton android:id="@+id/fourth"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=""/>
-            </RadioGroup>
-            </androidx.cardview.widget.CardView>
-            <Button
+                android:layout_weight="0.25"
+                android:text="" />
+
+            <RadioButton
+                android:id="@+id/third"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="Następne pytanie"
-                android:onClick="next_question"
-                android:id="@+id/next_question"
-                />
-        </LinearLayout>
+                android:layout_height="wrap_content"
+                android:layout_weight="0.25"
+                android:text="" />
+
+            <RadioButton
+                android:id="@+id/fourth"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.25"
+                android:text="" />
+        </RadioGroup>
     </androidx.cardview.widget.CardView>
 
-</RelativeLayout>
+    <Button
+        android:id="@+id/next_question"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:onClick="next_question"
+        android:text="Następne pytanie" />
+</LinearLayout>
