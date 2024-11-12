@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/polaczenie"
+    app:startDestination="@id/mainScreen">
+
+    <fragment
+        android:id="@+id/logowanie"
+        android:name="com.example.a2_lista.Logowanie"
+        android:label="fragment_logowanie"
+        tools:layout="@layout/fragment_logowanie" >
+        <action
+            android:id="@+id/action_logowanie_to_welcomeScreen"
+            app:destination="@id/welcomeScreen" />
+        <action
+            android:id="@+id/action_logowanie_to_mainScreen"
+            app:destination="@id/mainScreen" />
+    </fragment>
+    <fragment
+        android:id="@+id/rejestracja"
+        android:name="com.example.a2_lista.Rejestracja"
+        android:label="fragment_rejestracja"
+        tools:layout="@layout/fragment_rejestracja" >
+        <action
+            android:id="@+id/action_rejestracja_to_logowanie"
+            app:destination="@id/logowanie" />
+        <action
+            android:id="@+id/action_rejestracja_to_mainScreen"
+            app:destination="@id/mainScreen" />
+    </fragment>
+    <fragment
+        android:id="@+id/welcomeScreen"
+        android:name="com.example.a2_lista.WelcomeScreen"
+        android:label="fragment_welcome_screen"
+        tools:layout="@layout/fragment_welcome_screen" >
+        <action
+            android:id="@+id/action_welcomeScreen_to_mainScreen"
+            app:destination="@id/mainScreen" />
+    </fragment>
+    <fragment
+        android:id="@+id/mainScreen"
+        android:name="com.example.a2_lista.MainScreen"
+        android:label="fragment_main_screen"
+        tools:layout="@layout/fragment_main_screen" >
+        <action
+            android:id="@+id/action_mainScreen_to_rejestracja"
+            app:destination="@id/rejestracja" />
+        <action
+            android:id="@+id/action_mainScreen_to_logowanie"
+            app:destination="@id/logowanie" />
+    </fragment>
+</navigation>
