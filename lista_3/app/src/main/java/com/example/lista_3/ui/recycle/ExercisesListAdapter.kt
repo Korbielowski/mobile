@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.lista_3.R
 import com.example.lista_3.ui.data.ExercisesList
 
-class ExercisesListAdapter(private val exerciseLists: List<ExercisesList>) ://private val onClick: (ExerciseList) -> Unit) :
+class ExercisesListAdapter(private val exerciseLists: List<ExercisesList>) ://private val onClick:   (ExerciseList) -> Unit) :
     RecyclerView.Adapter<ExercisesListAdapter.ExerciseViewHolder>() {
 
     // ViewHolder for ExerciseList items
@@ -26,12 +26,24 @@ class ExercisesListAdapter(private val exerciseLists: List<ExercisesList>) ://pr
     }
 
     override fun onBindViewHolder(holder: ExerciseViewHolder, position: Int) {
+
+        // Map to track list numbering for each subject
+//        val subjectCountMap = mutableMapOf<String, Int>()
+
+        // Subject name
+//        val subjectName = exerciseList.subject.name
+
+        // Increment or initialize the count for this subject
+//        val listNumber = subjectCountMap.getOrDefault(subjectName, 0) + 1
+//        subjectCountMap[subjectName] = listNumber
+
         val exerciseList = exerciseLists[position]
         holder.subjectTextView.text = exerciseList.subject.name
         holder.gradeTextView.text = "Ocena: ${exerciseList.grade}"
         holder.exercisesTextView.text = "Liczba zadań: ${exerciseList.exercises.size}"
-        holder.listNumberTextView.text = "Lista ${position + 1}" // Przykładowo numer listy
+        holder.listNumberTextView.text = "Lista ${exerciseList.listNumber}" // Use the precomputed list number
     }
+
 
 
 
