@@ -1,5 +1,6 @@
 package com.example.a5_lista
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -16,6 +17,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -25,12 +27,10 @@ import androidx.navigation.compose.rememberNavController
 import kotlin.random.Random
 import com.example.a5_lista.ui.theme._5_listaTheme
 
-// Definicja klas danych
 data class Exercise(val content: String, val points: Int)
 data class Subject(val name: String)
-data class ExerciseList(val exercises: List<Exercise>, val subject: Subject, val grade: Double)
+data class ExerciseList(val exercises: List<Exercise>, val subject: Subject, val grade: Double, val number: Int)
 
-// Lista przedmiotów
 val subjects = listOf(
     Subject("Matematyka"),
     Subject("PUM"),
@@ -39,7 +39,6 @@ val subjects = listOf(
     Subject("Algorytmy")
 )
 
-// Generator danych
 fun generateDummyData(): List<ExerciseList> {
     val loremIpsum = listOf(
         "Lorem ipsum dolor sit amet",
@@ -54,6 +53,14 @@ fun generateDummyData(): List<ExerciseList> {
         "Eu fugiat nulla pariatur"
     )
 
+    val subjects_map: MutableMap<Subject, Int> = mutableMapOf(
+        Pair(Subject("Matematyka"), 0),
+        Pair(Subject("PUM"), 0),
+        Pair(Subject("Fizyka"), 0),
+        Pair(Subject("Elektronika"), 0),
+        Pair(Subject("Algorytmy"), 0)
+    )
+
     return List(20) {
         val exercisesCount = Random.nextInt(1, 11)
         val exercises = List(exercisesCount) {
@@ -65,10 +72,17 @@ fun generateDummyData(): List<ExerciseList> {
         val subject = subjects.random()
         val grade = Random.nextDouble(3.0, 5.1).let { Math.round(it * 2) / 2.0 }
 
+        val sub = subjects_map[subject]
+        var new_sub = 0
+        if(sub != null) {
+            new_sub = sub.plus(1)
+            subjects_map[subject] = new_sub
+        }
         ExerciseList(
             exercises = exercises,
             subject = subject,
-            grade = grade
+            grade = grade,
+            number = new_sub,
         )
     }
 }
@@ -133,19 +147,35 @@ fun BottomBar(navController: NavHostController) {
 
 @Composable
 fun TaskListScreen(exerciseLists: List<ExerciseList>, navController: NavHostController) {
-    LazyColumn(modifier = Modifier.fillMaxSize()) {
-        items(exerciseLists) { exerciseList ->
-            ListItem(
-                headlineContent = { Text(exerciseList.subject.name, fontWeight = FontWeight.Bold) },
-                supportingContent = {
-                    Text("Ocena: ${exerciseList.grade} | Zadania: ${exerciseList.exercises.size}")
-                },
-                modifier = Modifier.padding(8.dp).clickable {
-                    navController.navigate("taskDetails/${exerciseLists.indexOf(exerciseList)}")
-                }
+        Column (
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            Text(
+                "Moje Listy",
+                style = MaterialTheme.typography.headlineMedium,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
             )
+
+            LazyColumn(modifier = Modifier.fillMaxSize()) {
+                items(exerciseLists) { exerciseList ->
+                    ListItem(
+                        headlineContent = { Text("${exerciseList.subject.name}\t | \tLista ${exerciseList.number}", fontWeight = FontWeight.Bold) },
+                        supportingContent = {
+                            Text("Ocena: ${exerciseList.grade} | Zadania: ${exerciseList.exercises.size}")
+                        },
+                        modifier = Modifier
+                            .padding(8.dp)
+                            .clickable {
+                                navController.navigate("taskDetails/${exerciseLists.indexOf(exerciseList)}")
+                            }
+                    )
+                }
+            }
         }
-    }
 }
 
 @Composable
@@ -153,6 +183,18 @@ fun GradesScreen(exerciseLists: List<ExerciseList>) {
     val gradesBySubject = exerciseLists
         .groupBy { it.subject.name }
         .mapValues { (_, lists) -> lists.map { it.grade }.average() }
+Column (
+    modifier = Modifier
+    .fillMaxSize()
+    .padding(16.dp),
+    verticalArrangement = Arrangement.spacedBy(16.dp)){
+
+    Text(
+        "Moje Oceny",
+        style = MaterialTheme.typography.headlineMedium,
+        textAlign = TextAlign.Center,
+        modifier = Modifier.fillMaxWidth()
+    )
 
     LazyColumn(modifier = Modifier.fillMaxSize()) {
         items(gradesBySubject.entries.toList()) { (subject, averageGrade) ->
@@ -165,32 +207,34 @@ fun GradesScreen(exerciseLists: List<ExerciseList>) {
     }
 }
 
+}
+
 @Composable
 fun TaskDetailsScreen(exerciseList: ExerciseList) {
-    LazyColumn(modifier = Modifier.fillMaxSize().padding(16.dp)) {
-        items(exerciseList.exercises) { exercise ->
-            Column(modifier = Modifier.padding(8.dp)) {
-                Text("Zadanie: ${exerciseList.exercises.indexOf(exercise) + 1}", fontWeight = FontWeight.Bold)
-                Text(exercise.content)
-                Text("Punkty: ${exercise.points}")
+    Column (modifier = Modifier
+        .fillMaxSize()
+        .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ){
+        Text(
+            "${exerciseList.subject.name}\nLista ${exerciseList.number}",
+            style = MaterialTheme.typography.headlineMedium,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        LazyColumn(modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)) {
+            items(exerciseList.exercises) { exercise ->
+                Column(modifier = Modifier.padding(8.dp)) {
+                    Text("Zadanie: ${exerciseList.exercises.indexOf(exercise) + 1}", fontWeight = FontWeight.Bold)
+                    Text(exercise.content)
+                    Text("Punkty: ${exercise.points}")
+                }
+                HorizontalDivider(modifier = Modifier.padding(vertical = 4.dp))
             }
-            HorizontalDivider(modifier = Modifier.padding(vertical = 4.dp))
         }
     }
-}
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    _5_listaTheme {
-        Greeting("Android")
-    }
 }

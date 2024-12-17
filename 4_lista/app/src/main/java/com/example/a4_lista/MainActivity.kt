@@ -148,7 +148,6 @@ fun QuestionScreen(
                 Text(
                     text = question.text,
                     style = MaterialTheme.typography.headlineSmall,
-
                     textAlign = TextAlign.Center
                 )
                 question.options.forEachIndexed { index, option ->
