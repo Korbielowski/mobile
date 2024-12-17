@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/E1">
+
+    <fragment
+        android:id="@+id/E1"
+        android:name="com.example.ex3.fragments.E1"
+        android:label="fragment_a"
+        tools:layout="@layout/e1" >
+        <action
+            android:id="@+id/action_E1_to_E3"
+            app:destination="@id/E3">
+
+            <argument android:name="exerciseList"
+                app:argType="com.example.ex3.data.ExerciseList"/>
+        </action>
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/E2"
+        android:name="com.example.ex3.fragments.E2"
+        android:label="fragment_b"
+        tools:layout="@layout/e2" />
+
+
+    <fragment
+        android:id="@+id/E3"
+        android:name="com.example.ex3.fragments.E3"
+        android:label="fragment_login"
+        tools:layout="@layout/e3" />
+
+</navigation>
